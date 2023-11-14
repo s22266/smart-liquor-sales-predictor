@@ -1,0 +1,12 @@
+# Here you can define all your data sets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://docs.kedro.org/en/stable/data/data_catalog.html
+
+data1:
+ type: pandas.CSVDataSet
+ filepath: data/01_raw/iowa_liquor_sales_subset.csv
+
+cleaned_data:
+ type: pandas.ParquetDataSet
+ filepath: data/03_primary/cleaned_data.parquet
