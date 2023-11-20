@@ -6,7 +6,9 @@
 data1:
  type: pandas.CSVDataSet
  filepath: data/01_raw/iowa_liquor_sales_subset.csv
+ load_args:
+  low_memory: False
 
-cleaned_data:
- type: pandas.ParquetDataSet
- filepath: data/03_primary/cleaned_data.parquet
+#cleaned_data:
+# type: pandas.ParquetDataSet
+# filepath: data/03_primary/cleaned_data.parquet
