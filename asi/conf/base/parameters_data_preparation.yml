@@ -3,3 +3,18 @@
 #
 # Documentation for this file format can be found in "Parameters"
 # Link: https://docs.kedro.org/en/0.18.14/configuration/parameters.html
+
+columns_to_remove:
+  - county_number
+  - :@computed_region_3r5t_5243
+  - :@computed_region_wnea_7qqw
+  - :@computed_region_i9mz_6gmt
+  - :@computed_region_uhgg_e8y2
+  - :@computed_region_e7ym_nrbf
+
+records_with_null:
+  - city
+  - zipcode
+  - category
+  - category_name
+  - address
