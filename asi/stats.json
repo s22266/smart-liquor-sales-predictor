@@ -1,1 +1,1 @@
-{"rawData": {"rows": 1000000, "columns": 29, "file_size": 300280086}, "basicData": {"rows": 1000000, "columns": 23, "file_size": 281086953}, "preCleanedData": {"rows": 995590, "columns": 23, "file_size": 280734484}}
+{"rawData": {"rows": 1000000, "columns": 29, "file_size": 300280086}, "basicData": {"rows": 1000000, "columns": 23, "file_size": 281086953}, "preCleanedData": {"rows": 995590, "columns": 23, "file_size": 280734484}, "countyFullfilledData": {"rows": 995590, "columns": 23, "file_size": 280962419}}

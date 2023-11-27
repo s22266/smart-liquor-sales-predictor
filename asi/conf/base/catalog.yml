@@ -17,6 +17,10 @@ preCleanedData:
  type: pandas.CSVDataSet
  filepath: data/03_primary/pre_cleaned_data.csv
 
+countyFullfilledData:
+ type: pandas.CSVDataSet
+ filepath: data/03_primary/county_full_filled_data.csv
+
 #cleaned_data:
 # type: pandas.ParquetDataSet
 # filepath: data/03_primary/cleaned_data.parquet
