@@ -4,7 +4,7 @@ from urllib.parse import quote_plus
 import time
 
 class DataLoader:
-    def __init__(self, base_url, start_date, end_date, output_dir, limit=1000):
+    def __init__(self, base_url, start_date, end_date, output_dir, limit=50000):
         self.base_url = base_url
         self.start_date = start_date
         self.end_date = end_date
@@ -35,7 +35,7 @@ class DataLoader:
                 data_frames.append(data)
                 offset += self.limit
 
-                time.sleep(2) #Page overload when sleep < 2
+                time.sleep(1) #Page overload when sleep < 1
 
             except Exception as e:
                 print(f"Error while downloading URL: {full_url}, error: {e}")
