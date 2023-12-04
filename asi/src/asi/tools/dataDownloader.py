@@ -49,7 +49,7 @@ class DataLoader:
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
 
-        output_path = os.path.join(self.output_dir, 'downloaded_data.csv')
+        output_path = os.path.join(self.output_dir, 'iowa_dataset.csv')
         data.to_csv(output_path, index=False)
         print(f"Dane zapisane do {output_path}")
 
