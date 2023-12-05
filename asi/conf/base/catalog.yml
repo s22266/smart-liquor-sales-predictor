@@ -1,0 +1,26 @@
+# Here you can define all your data sets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://docs.kedro.org/en/stable/data/data_catalog.html
+
+rawData:
+ type: pandas.CSVDataSet
+ filepath: data/01_raw/iowa_dataset.csv
+ load_args:
+  low_memory: False
+
+preProcessedData:
+ type: pandas.CSVDataSet
+ filepath: data/02_intermediate/preProcessed_data.csv
+
+#preCleanedData:
+# type: pandas.CSVDataSet
+# filepath: data/03_primary/pre_cleaned_data.csv
+#
+#countyFullfilledData:
+# type: pandas.CSVDataSet
+# filepath: data/03_primary/county_full_filled_data.csv
+
+#cleaned_data:
+# type: pandas.ParquetDataSet
+# filepath: data/03_primary/cleaned_data.parquet

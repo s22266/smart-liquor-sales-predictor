@@ -1,0 +1,18 @@
+# This is a boilerplate parameters config generated for pipeline 'data_preparation'
+# using Kedro 0.18.14.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://docs.kedro.org/en/0.18.14/configuration/parameters.html
+
+columns_to_remove:
+  - county_number
+
+records_with_null:
+  - zipcode
+  - address
+  - city
+  - county
+  - category
+  - category_name
+  - vendor_no
+  - vendor_name
