@@ -9,17 +9,17 @@ rawData:
  load_args:
   low_memory: False
 
-basicData:
+preProcessedData:
  type: pandas.CSVDataSet
- filepath: data/02_intermediate/basic_data.csv
+ filepath: data/02_intermediate/preProcessed_data.csv
 
-preCleanedData:
- type: pandas.CSVDataSet
- filepath: data/03_primary/pre_cleaned_data.csv
-
-countyFullfilledData:
- type: pandas.CSVDataSet
- filepath: data/03_primary/county_full_filled_data.csv
+#preCleanedData:
+# type: pandas.CSVDataSet
+# filepath: data/03_primary/pre_cleaned_data.csv
+#
+#countyFullfilledData:
+# type: pandas.CSVDataSet
+# filepath: data/03_primary/county_full_filled_data.csv
 
 #cleaned_data:
 # type: pandas.ParquetDataSet

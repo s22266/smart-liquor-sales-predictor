@@ -1,1 +1,1 @@
-{"rawData": {"rows": 7801642, "columns": 24, "file_size": 2163562002}, "basicData": {"rows": 7801642, "columns": 23, "file_size": 2130117563}, "preCleanedData": {"rows": 7798817, "columns": 23, "file_size": 2129554185}, "countyFullfilledData": {"rows": 7798817, "columns": 23, "file_size": 2129554185}}
+{"rawData": {"rows": 7801642, "columns": 24, "file_size": 2163562002}, "preProcessedData": {"rows": 7765830, "columns": 26, "file_size": 1853752683}}

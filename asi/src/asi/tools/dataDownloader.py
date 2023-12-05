@@ -53,12 +53,11 @@ class DataLoader:
         data.to_csv(output_path, index=False)
         print(f"Dane zapisane do {output_path}")
 
-# Ustawienia
+# Parameters
 base_url = "https://data.iowa.gov/resource/m3tr-qhgy.json"
 start_date = "2020-01-01T00:00:00"
 end_date = "2023-01-01T00:00:00"
 output_dir = "../../../data/01_raw"
 
-# Użycie klasy DataLoader
 data_loader = DataLoader(base_url, start_date, end_date, output_dir)
 data_loader.load_data()
