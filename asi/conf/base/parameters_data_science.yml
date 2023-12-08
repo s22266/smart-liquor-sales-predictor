@@ -3,3 +3,22 @@
 #
 # Documentation for this file format can be found in "Parameters"
 # Link: https://docs.kedro.org/en/0.18.14/configuration/parameters.html
+
+model_options:
+  target:
+  test_size: 0.25
+  random_state: 0
+  features:
+
+random_forest:
+  module: sklearn.ensemble
+  class: RandomForestClassifier
+  kwargs:
+      bootstrap:  False
+      max_depth: 30
+      n_estimators: 150
+
+  param_grid:
+      n_estimators: [50, 100, 150]
+      max_depth: [None, 10, 20, 30]
+      min_samples_split: [2, 5, 10]
