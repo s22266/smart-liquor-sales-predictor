@@ -13,14 +13,38 @@ preProcessedData:
  type: pandas.CSVDataSet
  filepath: data/02_intermediate/preProcessed_data.csv
 
-#preCleanedData:
-# type: pandas.CSVDataSet
-# filepath: data/03_primary/pre_cleaned_data.csv
-#
-#countyFullfilledData:
-# type: pandas.CSVDataSet
-# filepath: data/03_primary/county_full_filled_data.csv
+processedData:
+ type: pandas.CSVDataSet
+ filepath: data/04_feature/processed_data.csv
 
-#cleaned_data:
-# type: pandas.ParquetDataSet
-# filepath: data/03_primary/cleaned_data.parquet
+X_train:
+  type: pickle.PickleDataSet
+  filepath: data/05_model_input/X_train.pkl
+  backend: pickle
+
+X_test:
+  type: pickle.PickleDataSet
+  filepath: data/05_model_input/X_test.pkl
+  backend: pickle
+
+y_train:
+  type: pickle.PickleDataSet
+  filepath: data/05_model_input/y_train.pkl
+  backend: pickle
+
+y_test:
+  type: pickle.PickleDataSet
+  filepath: data/05_model_input/y_test.pkl
+  backend: pickle
+
+linear_regression:
+  type: pickle.PickleDataSet
+  filepath: data/06_models/linearRegression_model.pkl
+  versioned: true
+
+evaluation_results:
+ type: pandas.CSVDataSet
+ filepath: data/07_model_output/linearRegression_model_output.csv
+
+#predictions:
+#  type: kedro.io.MemoryDataset

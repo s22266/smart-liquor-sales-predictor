@@ -29,7 +29,7 @@ CONFIG_LOADER_CLASS = OmegaConfigLoader
 
 CONFIG_LOADER_ARGS = {
     "config_patterns": {
-        "parameters": ["parameters.yml", "parameters_data_preparation.yml", "parameters*/**", "**/parameters*"]
+        "parameters": ["parameters.yml", "parameters_data_preparation.yml", "parameters_data_science.yml", "parameters*/**", "**/parameters*"]
     }
 }
 # Keyword arguments to pass to the `CONFIG_LOADER_CLASS` constructor.

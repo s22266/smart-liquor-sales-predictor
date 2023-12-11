@@ -1,1 +1,1 @@
-{"rawData": {"rows": 7801642, "columns": 24, "file_size": 2163562002}, "preProcessedData": {"rows": 7765830, "columns": 26, "file_size": 1853752683}}
+{"X_test": {"rows": 1643965, "columns": 26, "file_size": 355097413}, "evaluation_results": {"rows": 1, "columns": 3, "file_size": 76}}
