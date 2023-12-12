@@ -26,13 +26,25 @@ def create_pipeline(**kwargs) -> Pipeline:
                 func=train_model,
                 inputs={"X_train": "X_train", "y_train": "y_train", "model_options": "params:linear_regression"},
                 outputs="linear_regression",
-                name="train_model",
+                name="train_model_linear_regression",
+            ),
+            node(
+                func=train_model,
+                inputs={"X_train": "X_train", "y_train": "y_train", "model_options": "params:decision_tree_regressor"},
+                outputs="decision_tree_regressor",
+                name="train_model_decision_tree_regressor",
             ),
             node(
                 func=evaluate_model,
                 inputs=["linear_regression", "X_test", "y_test"],
-                outputs="evaluation_results",
-                name="evaluate_model",
+                outputs="linear_regression_evaluation_results",
+                name="evaluate_model_linear_regression",
+            ),
+            node(
+                func=evaluate_model,
+                inputs=["decision_tree_regressor", "X_test", "y_test"],
+                outputs="decision_tree_regressor_evaluation_results",
+                name="evaluate_model_decision_tree_regressor",
             ),
         ]
     )

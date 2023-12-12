@@ -1,1 +1,1 @@
-{"X_test": {"rows": 1643965, "columns": 26, "file_size": 355097413}, "evaluation_results": {"rows": 1, "columns": 3, "file_size": 76}}
+{"processedData": {"rows": 6575860, "columns": 27, "file_size": 3505831023}, "X_train": {"rows": 4931895, "columns": 26, "file_size": 1065290293}, "X_test": {"rows": 1643965, "columns": 26, "file_size": 355097413}, "decision_tree_regressor_evaluation_results": {"rows": 1, "columns": 3, "file_size": 76}, "linear_regression_evaluation_results": {"rows": 1, "columns": 3, "file_size": 76}}

@@ -42,9 +42,18 @@ linear_regression:
   filepath: data/06_models/linearRegression_model.pkl
   versioned: true
 
-evaluation_results:
+decision_tree_regressor:
+ type: pickle.PickleDataSet
+ filepath: data/06_models/decisionTreeRegressor_model.pkl
+ versioned: true
+
+linear_regression_evaluation_results:
  type: pandas.CSVDataSet
  filepath: data/07_model_output/linearRegression_model_output.csv
+
+decision_tree_regressor_evaluation_results:
+ type: pandas.CSVDataSet
+ filepath: data/07_model_output/decisionTreeRegressor_model_output.csv
 
 #predictions:
 #  type: kedro.io.MemoryDataset
