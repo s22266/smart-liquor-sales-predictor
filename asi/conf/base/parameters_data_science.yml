@@ -7,7 +7,7 @@
 model_options:
   target: sale_dollars
   test_size: 0.25
-  random_state: 0
+  random_state: 42
   features:
     - invoice_line_no
     - store
@@ -36,36 +36,8 @@ model_options:
     - is_weekday
     - season
 
-#random_forest_regressor:
-#  module: sklearn.ensemble
-#  class: RandomForestRegressor
-#  kwargs:
-#    bootstrap: False
-#    max_depth: 30
-#    n_estimators: 150
-#
-#  param_grid:
-#    n_estimators: [50, 100, 150, 200]
-#    max_depth: [None, 10, 20, 30, 40]
-#    min_samples_split: [2, 5, 10]
-#    min_samples_leaf: [1, 2, 4]
-#    max_features: ['auto', 'sqrt']
-
-linear_regression:
-  module: sklearn.linear_model
-  class: LinearRegression
-  kwargs:
-    fit_intercept: True
-
 decision_tree_regressor:
   module: sklearn.tree
   class: DecisionTreeRegressor
   kwargs:
       max_depth: 5
-#    splitter: ["best","random"],
-#    max_depth: [1,3,5,7,9,11,12],
-#    min_samples_leaf: [1,2,3,4,5,6,7,8,9,10],
-#    min_weight_fraction_leaf: [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9],
-#    max_features: ["auto","log2","sqrt",None],
-#    max_leaf_nodes: [None,10,20,30,40,50,60,70,80,90]
-

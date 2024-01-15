@@ -103,14 +103,14 @@ def process_data(data: pd.DataFrame) -> pd.DataFrame:
 
 def train_test_split_data(data: pd.DataFrame, parameters: Dict) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
-    Splits the data into training and testing sets.
+    Splits data into features and targets training and test sets.
 
     Args:
-        data: DataFrame containing the data to be split.
-        params: Dictionary of parameters including target, test_size, random_state, etc.
+        data: Data containing features and target.
+        params: Parameters defined in parameters_data_science.yml.
 
     Returns:
-        A Tuple containing the DataFrames: X_train, X_test, y_train, y_test.
+        A Tuple containing the DataFrames: X_train, X_test, y_train, y_test. [Split data]
     """
 
     target = parameters['target']
