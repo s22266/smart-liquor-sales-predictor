@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
+from kedro.io import DataCatalog
 
 # Wczytanie danych
-data = pd.read_csv("iowa_dataset.csv")  # Podmień na odpowiednią nazwę pliku CSV
+data = pd.read_csv(r"../../data/01_raw/small_iowa_dataset.csv")  # Podmień na odpowiednią nazwę pliku CSV
 
 # Unikalne sklepy dostępne w danych
 available_stores = data['name'].unique()
