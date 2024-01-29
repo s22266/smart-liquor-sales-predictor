@@ -12,6 +12,9 @@ imported_data_iowa_liquer:
 final_data:
   type: pandas.CSVDataSet
   filepath: data/03_processed/final_processed_data.csv
+  load_args:
+    low_memory: True
+
 
 # predicted_data:
 #   type: pandas.CSVDataSet
