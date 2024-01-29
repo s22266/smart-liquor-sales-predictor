@@ -4,6 +4,9 @@ from prophet import Prophet
 import logging
 from google.api_core.exceptions import BadRequest
 from google.cloud import bigquery
+import os
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./conf/local/credGoogleCloud.json"
 
 def make_prediction(column,item,predicted_column,number_of_months):
     column = zmien_nazwe_kolumny(column)

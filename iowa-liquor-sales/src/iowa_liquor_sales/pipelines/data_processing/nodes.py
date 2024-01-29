@@ -7,14 +7,24 @@ import pandas as pd
 from pandas.tseries.offsets import MonthEnd
 
 def filter_data_from_2017(df_start):
+    """
+        Filters the DataFrame to include only data from 2017 onwards.
 
+        Args:
+            df_start (pd.DataFrame): The input DataFrame.
+
+        Returns:
+            pd.DataFrame: The filtered DataFrame with data from 2017 onwards.
+    """
     features = ['Date', 'County', 'Category Name']
     target_column = 'Sale (Dollars)'
 
+    # Select required columns and convert the 'Date' column to datetime
     df = df_start[features + [target_column]]
 
     df['Date'] = pd.to_datetime(df['Date'])
 
+    # Filter rows where the year is 2017 or later
     df = df[df['Date'].dt.year >= 2017]
 
     return df
@@ -175,14 +185,19 @@ def alcohol_description_parser(df):
                 return keyword
         return None
 
+    # Create a copy of the DataFrame to avoid modifying the original
     df = df.copy()
 
+    # Apply the transformation to the 'Category Name' column
     df['Category Name'] = df['Category Name'].apply(transform_description)
 
+    # Remove rows where the transformed 'Category Name' is None (i.e., no keyword match)
     df = df.dropna()
 
+    # Column name for sales data
     target_column = 'Sale (Dollars)'
-    
+
+    # Group by the transformed 'Category Name' and other relevant columns, and sum the sales data
     df_aggregated = df.groupby(['Category Name', 'Month', 'Year', 'County'], as_index=False)[target_column].sum()
 
     return df_aggregated
