@@ -13,5 +13,7 @@ def train_model_node(df: pd.DataFrame):
 
     predictor = TabularPredictor(label=label_column, path="./data/06_models/ag_models").fit(df, time_limit=time_limit)
     leaderboard = predictor.leaderboard(silent=True)
-    best_model = leaderboard.iloc[0]['model']  # Pobranie najlepszego modelu
+    best_model = leaderboard.iloc[0]['model']
+    print(predictor.info()['model_info'][best_model])
+
     return best_model

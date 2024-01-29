@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 import pandas as pd
-from functions import groupBy
+from functions import make_prediction
 import yaml
 from kedro.framework.session import KedroSession
 from kedro.framework.startup import bootstrap_project
@@ -85,7 +85,7 @@ def algorytmPrzewidywaniaSprzedaży():
 def facebookAlgorithm():
     st.header("Facebook algorithm")
     
-    unique_data = pd.read_csv("Iowa_Unique.csv")
+    unique_data = pd.read_csv("./app/Iowa_Unique.csv")
 
     # Utwórz listę z nazwami kolumn
     column_names = unique_data.columns.tolist()
@@ -105,8 +105,10 @@ def facebookAlgorithm():
     # Wybierz predykowane pole (kolejną kolumnę) za pomocą trzeciego selectbox
     predicted_column = st.selectbox("Wybierz predykowane pole", predicted_column_names)
 
-    if st.button("Predict"):
-        st.pyplot(groupBy(selected_column,selected_value,predicted_column))
+    number_of_months = st.slider("Wybierz liczbę miesięcy do predykcji", min_value=1, max_value=69, value=1)
+
+    if st.button("Prediction"):
+        st.pyplot(make_prediction(selected_column,selected_value,predicted_column,number_of_months))
     
 
 def informacjeOgolne():

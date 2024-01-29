@@ -5,7 +5,7 @@ import logging
 from google.api_core.exceptions import BadRequest
 from google.cloud import bigquery
 
-def groupBy(column,item,predicted_column):
+def make_prediction(column,item,predicted_column,number_of_months):
     
     column = zmien_nazwe_kolumny(column)
     predicted_column = zmien_nazwe_kolumny(predicted_column)
@@ -43,7 +43,7 @@ def groupBy(column,item,predicted_column):
     model.fit(df_train_prophet)
 
     # Tworzymy przyszłość z danymi godzinowymi na rok naprzód
-    future = model.make_future_dataframe(periods=12*2, freq='M', include_history=False)
+    future = model.make_future_dataframe(periods=number_of_months, freq='M', include_history=False)
     forecast = model.predict(future)
 
     # Ograniczamy zakres dat na wykresie

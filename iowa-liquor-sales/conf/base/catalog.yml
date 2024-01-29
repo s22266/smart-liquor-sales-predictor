@@ -3,23 +3,15 @@
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://docs.kedro.org/en/stable/data/data_catalog.html
 
-hello_output:
-  type: pandas.CSVDataSet
-  filepath: data/01_raw/hello_output.csv
-  load_args:
-    low_memory: False
-
 imported_data_iowa_liquer:
   type: pandas.CSVDataSet
   filepath: data/01_raw/imported_data_iowa_liquer.csv
   load_args:
-    low_memory: False
+    low_memory: True
 
 final_data:
   type: pandas.CSVDataSet
   filepath: data/03_processed/final_processed_data.csv
-  load_args:
-    low_memory: False
 
 # predicted_data:
 #   type: pandas.CSVDataSet
