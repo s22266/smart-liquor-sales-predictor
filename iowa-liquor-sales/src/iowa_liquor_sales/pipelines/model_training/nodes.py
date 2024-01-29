@@ -6,8 +6,8 @@ generated using Kedro 0.18.14
 import pandas as pd
 from autogluon.tabular import TabularPredictor
 
-def train_model_node(df: pd.DataFrame):
-    time_limit = 12
+def train_model(df: pd.DataFrame):
+    time_limit = 600
     label_column="Sale (Dollars)"
     df[label_column] = df[label_column].astype(float)
 

@@ -153,3 +153,36 @@ def create_year_and_month_columns(df):
     df.drop('Month_Year', axis=1, inplace=True)
 
     return df
+
+def alcohol_description_parser(df):
+    """
+    Transforms values in the 'alcohol_description' column to one of the specified keywords if they match any of the
+    specified character strings. Removes rows that do not match any keyword. Additionally, aggregates the data to sum
+    up the quantities of the same alcohol types.
+
+    Parameters:
+        df (pd.DataFrame): The input DataFrame with the 'Category Name' column.
+
+    Returns:
+        pd.DataFrame: The processed DataFrame with 'alcohol_description' values replaced, cleaned, and aggregated.
+    """
+    
+    keywords = ['RUM', 'VODKA', 'TEQUILA', 'WHISKIES', 'SCHNAPPS']
+
+    def transform_description(description):
+        for keyword in keywords:
+            if keyword in description.upper():
+                return keyword
+        return None
+
+    df = df.copy()
+
+    df['Category Name'] = df['Category Name'].apply(transform_description)
+
+    df = df.dropna()
+
+    target_column = 'Sale (Dollars)'
+    
+    df_aggregated = df.groupby(['Category Name', 'Month', 'Year', 'County'], as_index=False)[target_column].sum()
+
+    return df_aggregated

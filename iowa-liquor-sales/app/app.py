@@ -17,9 +17,9 @@ project_path = Path.cwd()
 bootstrap_project(project_path)
 
 # Funkcja do uruchomienia Kedro pipeline
-def run_kedro_pipeline():
+def run_kedro_pipeline(pipeline_name):
     with KedroSession.create(project_path=project_path) as session:
-        return session.run(pipeline_name="model_prediction")  # Uruchamia domyślny pipeline
+        return session.run(pipeline_name=pipeline_name)
 
 page_bg_img = """
 <style>
@@ -34,15 +34,18 @@ def main():
     st.markdown(page_bg_img, unsafe_allow_html=True)
     st.title("Sprzedaż alkholu wysokoprocentowego w stanie Iowa")
 
-    tabs = ["Informacje ogólne", "Algorytm Facebooka", "Algorytm przewidywania sprzedaży"]
+    tabs = ["Informacje ogólne", "Algorytm Prophet", "Algorytm przewidywania sprzedaży"]
     choice = st.sidebar.selectbox("Wybierz stronę", tabs)
 
     if choice == "Informacje ogólne":
         informacjeOgolne()
-    elif choice == "Algorytm Facebooka":
+    elif choice == "Algorytm Prophet":
         facebookAlgorithm()
     elif choice == "Algorytm przewidywania sprzedaży":
         algorytmPrzewidywaniaSprzedaży()
+
+    # if st.sidebar.button("Retrain model"):
+    #     run_kedro_pipeline("create_model")
 
 def algorytmPrzewidywaniaSprzedaży():
     st.header("Algorytm przewidywania sprzedaży")
@@ -51,12 +54,12 @@ def algorytmPrzewidywaniaSprzedaży():
     countydf = pd.read_csv('./app/distinct_county.csv')
     selected_county = st.selectbox("Wybierz Chrabstwo", countydf['county'])
 
-    alcoholTypes = ['Rum', 'Vodka', 'Tequila', 'Whiskies', 'schnapps']
+    alcoholTypes = ['Rum', 'Vodka', 'Tequila', 'Whiskies', 'Schnapps']
     selected_liquor = st.selectbox("Wybierz Alkohol", alcoholTypes)
 
     # Wybór daty początkowej i końcowej
-    start_date = st.date_input("Wybierz datę początkową", value=pd.to_datetime("2020-01-01"))
-    end_date = st.date_input("Wybierz datę końcową", value=pd.to_datetime("2023-12-31"))
+    start_date = st.date_input("Wybierz datę początkową", value=pd.to_datetime("2023-12-01"))
+    end_date = st.date_input("Wybierz datę końcową", value=pd.to_datetime("2024-12-31"))
 
     if st.button("Predict"):
         with open('./conf/base/parameters_model_prediction.yml', 'w') as file:
@@ -69,15 +72,28 @@ def algorytmPrzewidywaniaSprzedaży():
                 'end_month': end_date.month,
             }, file)
         # Uruchamianie modelu i generowanie wykresu
-        result_df = run_kedro_pipeline()
+        result= run_kedro_pipeline("model_prediction")
 
-        result_df = result_df['predicted_data']
+        result_df = result['predicted_data']
+
+        st.dataframe(result_df)
+
+        historic_df = result['historic_data']
+
+        # Tworzenie daty na podstawie kolumn "Year" i "Month" dla wyników przewidywań
+        result_df['Date'] = pd.to_datetime(result_df['Year'].astype(str) + '-' + result_df['Month'].astype(str))
+
+        # Tworzenie daty na podstawie kolumn "Year" i "Month" dla danych historycznych
+        historic_df['Date'] = pd.to_datetime(historic_df['Year'].astype(str) + '-' + historic_df['Month'].astype(str))
 
         fig, ax = plt.subplots()
-        sns.lineplot(x=result_df.index, y=result_df['predicted'], ax=ax)  # Zakładam, że index DataFrame to data
-        plt.title("Przewidywania sprzedaży")
+        sns.lineplot(x=result_df['Date'], y=result_df['predicted'], ax=ax, label='Przewidywana sprzedaż')  
+        sns.lineplot(x=historic_df['Date'], y=historic_df['Sale (Dollars)'], ax=ax, label='Rzeczywista sprzedaż')  # Dodanie danych historycznych
+        plt.title("Przewidywania sprzedaży vs. Rzeczywista sprzedaż")
         plt.xlabel("Data")
-        plt.ylabel("Przewidywana sprzedaż")
+        plt.ylabel("Sprzedaż w dolarach")
+        plt.xticks(rotation=45)
+        plt.legend()
         st.pyplot(fig)
     
             
@@ -115,45 +131,43 @@ def informacjeOgolne():
     st.header("Informacje ogólne")
     
     # Dodanie obrazka
-    st.image("iowa_citizen.png", caption="Mieszkaniec stanu Iowa", use_column_width=True)
+    st.image("./app/iowa_citizen.png", caption="Mieszkaniec stanu Iowa", use_column_width=True)
 
     # Dodanie artykułu
     st.write("""
     ## Iowa Liquor Sales Dataset
-
+    
     Zbiór danych *Iowa Liquor Sales* zawiera informacje o sprzedaży napojów alkoholowych w stanie Iowa. Jest to cenne źródło danych dla analizy konsumpcji alkoholu oraz trendów w sprzedaży i dystrybucji napojów alkoholowych.
-
+    
     ### Struktura danych
-
+    
     Zbiór danych składa się z kilku kolumn, w tym:
-
-    - **Date:** Data transakcji.
-    - **Store Number:** Numer sklepu, w którym dokonano sprzedaży.
-    - **City:** Miasto, w którym znajduje się sklep.
-    - **Zip Code:** Kod pocztowy sklepu.
-    - **County:** Powiat, w którym znajduje się sklep.
-    - **Category:** Kategoria napoju alkoholowego.
-    - **Vendor Number:** Numer dostawcy napoju.
-    - **Item Number:** Numer przedmiotu (napoju).
-    - **Item Description:** Opis napoju.
-    - **Bottle Volume (ml):** Objętość butelki w mililitrach.
-    - **State Bottle Retail:** Cena detaliczna butelki w danym stanie.
-    - **Volume Sold (Liters):** Objętość sprzedanego napoju w litrach.
-    - **Sale (Dollars):** Całkowita wartość sprzedaży w dolarach.
-
-    ### Analiza danych
-
-    Zbiór danych można wykorzystać do różnych analiz, takich jak:
-
-    - Analiza sprzedaży w poszczególnych miastach czy powiatach.
-    - Średnie wartości sprzedaży w zależności od kategorii napojów.
-    - Analiza trendów czasowych w konsumpcji alkoholu.
-
-    ### Korzystanie z danych
-
-    Przed przystąpieniem do analizy warto dokładnie zbadać i oczyścić dane, aby uzyskać precyzyjne wyniki. Pamiętaj również o przestrzeganiu przepisów dotyczących prywatności i zabezpieczenia danych.
-
-    Zapraszam do eksploracji danych i odkrywania fascynujących trendów w zestawie danych Iowa Liquor Sales!
+    
+    - **Invoice/Item Number:** Unikalny identyfikator zestawu zamówienia i numeru linii związanej z zamówieniem alkoholu w sklepie.
+    - **Date:** Data zamówienia.
+    - **Store Number:** Unikalny numer przypisany do sklepu, który zamówił alkohol.
+    - **Store Name:** Nazwa sklepu, który zamówił alkohol.
+    - **Address:** Adres sklepu, który zamówił alkohol.
+    - **City:** Miasto, w którym znajduje się sklep zamawiający alkohol.
+    - **Zip Code:** Kod pocztowy miejsca, w którym znajduje się sklep zamawiający alkohol.
+    - **Store Location:** Lokalizacja sklepu, zamawiającego alkohol.
+    - **County Number:** Numer hrabstwa w stanie Iowa, w którym znajduje się sklep zamawiający alkohol.
+    - **County:** Hrabstwo, w którym znajduje się sklep zamawiający alkohol.
+    - **Category:** Kod kategorii związany z zamówionym alkoholem.
+    - **Category Name:** Kategoria zamówionego alkoholu.
+    - **Vendor Number:** Numer dostawcy dla marki zamówionego alkoholu.
+    - **Vendor Name:** Nazwa dostawcy dla marki zamówionego alkoholu.
+    - **Item Number:** Numer identyfikacyjny produktu alkoholowego.
+    - **Item Description:** Opis zamówionego produktu alkoholowego.
+    - **Pack:** Liczba butelek w kartonie dla zamówionego alkoholu.
+    - **Bottle Volume (ml):** Objętość każdej butelki alkoholu w mililitrach.
+    - **State Bottle Cost:** Kwota, którą Alcoholic Beverages Division zapłaciła za każdą butelkę alkoholu w zamówieniu.
+    - **State Bottle Retail:** Kwota, którą sklep zapłacił za każdą butelkę alkoholu w zamówieniu.
+    - **Bottles Sold:** Ilość butelek alkoholu zamówionych przez sklep.
+    - **Sale (Dollars):** Całkowity koszt zamówienia alkoholu.
+    - **Volume Sold (Liters):** Całkowita objętość zamówionego alkoholu w litrach.
+    - **Volume Sold (Gallons):** Całkowita objętość zamówionego alkoholu w galonach.
+    
     """)
 
 if __name__ == "__main__":

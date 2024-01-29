@@ -6,7 +6,7 @@ generated using Kedro 0.18.14
 from autogluon.tabular import TabularPredictor
 import pandas as pd
 
-def data_prediction_node(county_name, category_name, start_month, start_year, end_month, end_year):
+def data_prediction_node(county_name, category_name, start_month, start_year, end_month, end_year, historic_df):
     """
     Performs predictions on the provided data using the supplied model.
 
@@ -34,7 +34,9 @@ def data_prediction_node(county_name, category_name, start_month, start_year, en
     # Dodajemy kolumnę "predicted" do DataFrame
     df['predicted'] = predictions
 
-    return df
+    historic_df = get_historic_data(historic_df, county_name, category_name)
+
+    return df, historic_df
 
 def generate_dataframe(county_name, category_name, start_month, start_year, end_month, end_year):
     """
@@ -72,8 +74,18 @@ def generate_dataframe(county_name, category_name, start_month, start_year, end_
         'Month': months,
         'Year': years,
         'County': [county_name] * len(months),
-        'Category Name': [category_name] * len(months)
+        'Category Name': [category_name.upper()] * len(months)
     }
 
     df = pd.DataFrame(data)
     return df
+
+def get_historic_data(processed_data, filter_value_for_county, filter_value_for_description):
+
+    filter_value_for_county = filter_value_for_county.upper()
+    filter_value_for_description = filter_value_for_description.upper()
+
+    processed_data = processed_data[processed_data['County'].str.upper() == filter_value_for_county]
+    processed_data = processed_data[processed_data['Category Name'].str.contains(filter_value_for_description, case=False)]
+
+    return processed_data

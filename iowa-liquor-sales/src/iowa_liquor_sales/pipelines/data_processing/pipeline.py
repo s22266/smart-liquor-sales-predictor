@@ -10,7 +10,8 @@ from .nodes import (
     remove_categories_with_missing_days,
     aggregate_by_month_year,
     remove_outliers,
-    create_year_and_month_columns
+    create_year_and_month_columns,
+    alcohol_description_parser
 )
 
 # Tworzenie węzłów dla funkcji
@@ -59,8 +60,15 @@ remove_outliers_node = node(
 create_year_and_month_columns_node = node(
     create_year_and_month_columns,
     inputs="data_without_outliers",
-    outputs="final_data",
+    outputs="year_and_month_columns",
     name="create_year_and_month_columns_node"
+)
+
+alcohol_description_parser_node = node(
+    alcohol_description_parser,
+    inputs="year_and_month_columns",
+    outputs="final_data",
+    name="alcohol_description_parser_node"
 )
 
 def create_pipeline(**kwargs):
@@ -73,5 +81,6 @@ def create_pipeline(**kwargs):
             aggregate_by_month_year_node,
             remove_outliers_node,
             create_year_and_month_columns_node,
+            alcohol_description_parser_node
         ]
     )

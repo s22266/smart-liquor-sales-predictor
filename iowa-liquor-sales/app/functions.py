@@ -6,7 +6,6 @@ from google.api_core.exceptions import BadRequest
 from google.cloud import bigquery
 
 def make_prediction(column,item,predicted_column,number_of_months):
-    
     column = zmien_nazwe_kolumny(column)
     predicted_column = zmien_nazwe_kolumny(predicted_column)
 
@@ -16,16 +15,6 @@ def make_prediction(column,item,predicted_column,number_of_months):
 
     # Próbujemy przekształcić kolumnę 'date' do typu daty
     df['date'] = pd.to_datetime(df['date'])
-
-    # Grupowanie po 'Store Name' i zliczanie unikalnych dat, a następnie sortowanie wyników
-    store_counts = df.groupby(column)['date'].nunique().reset_index()
-    store_counts_sorted = store_counts.sort_values(by='date', ascending=False)  
-
-    # Wybierz sklep, którego dane chcesz pozostawić
-    wybrana_wartosc = item
-
-    # Utwórz nowy DataFrame zawierający tylko dane z wybranego sklepu
-    df_sklep = df[df[column] == wybrana_wartosc]
 
     # Agregacja danych tygodniowo i sumowanie sprzedaży dla każdego tygodnia
     df = df.resample('M', on='date')[predicted_column].sum().reset_index()
@@ -80,12 +69,28 @@ def replace_outliers_with_max(df, column):
     df[column] = df[column].apply(lambda x: max(x, min_non_negative))
 
     return df
-
+    
 def get_dataFrame(groupingColumn,item,predicted_column, project_id='caramel-park-411816'):
     # Delete all items from yesterday import
     bq = bigquery.Client(project=project_id)
     try:
-        results = bq.query(f"SELECT {groupingColumn}, date, {predicted_column} FROM `ASI.sales` where {groupingColumn} = '{item}' AND {groupingColumn} IS NOT NULL AND date IS NOT NULL AND {predicted_column} IS NOT NULL")
+        results = bq.query(f"""
+        SELECT 
+  {groupingColumn}, 
+    FORMAT_DATE('%Y-%m', PARSE_DATE('%Y-%m-%d', date)) AS date,
+  SUM({predicted_column}) as {predicted_column}
+FROM 
+  `ASI.sales`
+WHERE 
+  {groupingColumn} = '{item}' AND 
+  {groupingColumn} IS NOT NULL AND 
+  date IS NOT NULL AND 
+  {predicted_column} IS NOT NULL
+GROUP BY 
+  {groupingColumn}, date
+
+        """)
+        print(results)
         df = results.to_dataframe()
         print("📝 Successfully executed query")
     except BadRequest as e:
@@ -93,7 +98,6 @@ def get_dataFrame(groupingColumn,item,predicted_column, project_id='caramel-park
         return str(e)
     else:
         return df
-        
 
 def zmien_nazwe_kolumny(stara_nazwa):
     # Utwórz słownik z mapowaniem starych nazw kolumn na nowe nazwy

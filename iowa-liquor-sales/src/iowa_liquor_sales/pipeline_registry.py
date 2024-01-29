@@ -13,5 +13,6 @@ def register_pipelines() -> dict[str, Pipeline]:
     """
     pipelines = find_pipelines()
     print(pipelines)
-    pipelines["__default__"] = sum([pipelines['data_processing'], pipelines['model_prediction']])
+    pipelines["create_model"] = sum([pipelines['data_processing'], pipelines['model_training']])
+    pipelines["__default__"] = sum([pipelines['data_processing'], pipelines['model_training']])
     return pipelines
