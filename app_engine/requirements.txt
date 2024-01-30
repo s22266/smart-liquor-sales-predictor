@@ -1,0 +1,7 @@
+pandas
+numpy
+streamlit
+prophet
+seaborn
+google-cloud-bigquery
+db-dtypes
