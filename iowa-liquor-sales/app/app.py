@@ -57,7 +57,7 @@ def main():
         data_loader = DataLoader(base_url, start_date_to_download, end_date_to_download, output_dir)
         is_succes = data_loader.load_data()
         if is_succes:
-            st.sidebar.write("Dane zapisane lokalnie w lokalizacji data/01_raw/imported_data_iowa_liquer.csv")
+            st.sidebar.write("Dane zapisane lokalnie w lokalizacji data/01_raw/imported_data_iowa_liquer1.csv")
         elif is_succes == False:
             st.sidebar.write("Dane nie zostały zapisane")
 
