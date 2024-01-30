@@ -51,7 +51,7 @@ class DataLoader:
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
 
-        output_path = os.path.join(self.output_dir, 'imported_data_iowa_liquer1.csv')
+        output_path = os.path.join(self.output_dir, 'imported_data_iowa_liquer.csv')
         data.to_csv(output_path, index=False)
         print(f"Dane zapisane do {output_path}")
 

@@ -5,7 +5,7 @@
 
 imported_data_iowa_liquer:
   type: pandas.CSVDataSet
-  filepath: data/01_raw/imported_data_iowa_liquer1.csv
+  filepath: data/01_raw/imported_data_iowa_liquer.csv
   load_args:
     low_memory: True
 
