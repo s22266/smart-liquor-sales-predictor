@@ -8,6 +8,12 @@ from kedro.framework.startup import bootstrap_project
 from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns
+from dataDownloader import DataLoader
+
+base_url = "https://data.iowa.gov/resource/m3tr-qhgy.json"
+# start_date = "2023-01-01T00:00:00"
+# end_date = "2023-01-02T00:00:00"
+output_dir = "./data/01_raw"
 
 # Wskazanie ścieżki do katalogu głównego projektu Kedro
 # Zakładając, że uruchamiasz Streamlit z tego samego katalogu
@@ -44,8 +50,20 @@ def main():
     elif choice == "Algorytm przewidywania sprzedaży":
         algorytmPrzewidywaniaSprzedaży()
 
-    # if st.sidebar.button("Retrain model"):
-    #     run_kedro_pipeline("create_model")
+    start_date_to_download = str(st.sidebar.date_input("Wybierz datę początkową", value=pd.to_datetime("2016-12-01"))) + "T00:00:00"
+    end_date_to_download = str(st.sidebar.date_input("Wybierz datę końcową", value=pd.to_datetime("2023-12-02"))) + "T00:00:00"
+
+    if st.sidebar.button("Pobierz rekordy"):
+        data_loader = DataLoader(base_url, start_date_to_download, end_date_to_download, output_dir)
+        is_succes = data_loader.load_data()
+        if is_succes:
+            st.sidebar.write("Dane zapisane lokalnie w lokalizacji data/01_raw/imported_data_iowa_liquer.csv")
+        elif is_succes == False:
+            st.sidebar.write("Dane nie zostały zapisane")
+
+
+    if st.sidebar.button("Retrain model"):
+        run_kedro_pipeline("create_model")
 
 def algorytmPrzewidywaniaSprzedaży():
     st.header("Algorytm przewidywania sprzedaży")

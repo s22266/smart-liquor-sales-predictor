@@ -16,12 +16,23 @@ def filter_data_from_2017(df_start):
         Returns:
             pd.DataFrame: The filtered DataFrame with data from 2017 onwards.
     """
+
+    # Column mapping dictionary
+    column_mapping = {
+        'county': 'County',
+        'category_name': 'Category Name',
+        'sale_dollars': 'Sale (Dollars)',
+        'date': 'Date'
+    }
+
+    # Rename columns based on the mapping
+    df_start = df_start.rename(columns=lambda x: column_mapping[x] if x in column_mapping else x)
+
     features = ['Date', 'County', 'Category Name']
     target_column = 'Sale (Dollars)'
 
     # Select required columns and convert the 'Date' column to datetime
     df = df_start[features + [target_column]]
-
     df['Date'] = pd.to_datetime(df['Date'])
 
     # Filter rows where the year is 2017 or later

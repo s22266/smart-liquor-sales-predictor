@@ -18,6 +18,7 @@ def train_model(df: pd.DataFrame):
     """
     # Set the time limit for the training process
     time_limit = 600
+    print(df.head())
     # Define the label (target) column
     label_column="Sale (Dollars)"
     # Ensure the label column is of float type
