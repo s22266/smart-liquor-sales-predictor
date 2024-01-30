@@ -1,103 +1,52 @@
-# iowa-liquor-sales
 
-## Overview
+# Przewidywanie Sprzedaży alkoholu w stanie IOWA
 
-co to jezst za projekt
+## Ważne 
 
-## How to install dependencies
+Należy wrzucić odpowiedni plik credentials.json do folderu conf/local pod nazwą credGoogleCloud.json w clu połączenia z usługą google Big Query
 
-Declare any dependencies in `src/requirements.txt` for `pip` installation and `src/environment.yml` for `conda` installation.
+W celu poprawnego działaniu części wykorzystującej autogluon należy kliknąć w przycisk "Pobierz rekordy" na stronie głównej aplikacji stremalit lub pobrać dataset Iowa-Liquor-Sales z strony https://data.iowa.gov/Sales-Distribution/Iowa-Liquor-Sales/m3tr-qhgy/data_preview w foramcie ".csv" i umieścić go w folderze "data/01_raw/" pod nazwą imported_data_iowa_liquer.csv
 
-To install them, run:
+## Opis funkcjonalności 
 
-```
+Główne funkcjonalności aplikacji do prognozowania sprzedaży obejmują: 
+
+### Algorytm WeightedEnsemble_L2: 
+
+Umożliwia przewidywanie ogólnej sprzedaży alkoholu w oparciu o wybraną kategorię alkoholu i hrabstwo. Użytkownik ma możliwość wyboru z listy rozwijanej interesującego go hrabstwa oraz kategorii produktu, a system generuje prognozę sprzedaży dla tej kombinacji. 
+
+### Algorytm Prophet: 
+
+Drugi algorytm oferuje bardziej szczegółowe prognozy sprzedaży, biorąc pod uwagę dodatkowe kolumny grupujące takie jak: miasto (City), hrabstwo (County), nazwa kategorii (Category Name), nazwa dostawcy (Vendor Name), opis przedmiotu (Item Description). 
+
+Algorytm przewiduje wartości takie jak liczba sprzedanych butelek (Bottles Sold), sprzedaż w dolarach (Sale in Dollars), oraz objętość sprzedanego alkoholu zarówno w litrach (Volume Sold in Liters) jak i w galonach (Volume Sold in Gallons). 
+
+Aplikacja pozwala użytkownikom na dokładną analizę trendów sprzedażowych i prognozowanie przyszłych wyników sprzedaży. 
+
+## 1. Stawianie obrazu dockerowego 
+
+Założnie: Aplikacja Docker jest zainstalowana 
+
+#### 1) Postawienie lokalnie kontenera
+docker build -t "nazwa kontenera" .
+
+#### 2) Uruchomienie kontenera
+docker run -p 8080:8080 "nazwa kontenera"
+
+## 2. Local
+
+#### 1) Pobranie wymaganych zależności 
+
 pip install -r src/requirements.txt
-```
 
-## How to run your Kedro pipeline
+#### 2) uruchomienia aplikacji webowej lokalnie
 
-You can run your Kedro project with:
+streamlit run app/app.py
 
-```
-kedro run
-```
 
-To configure the coverage threshold, go to the `.coveragerc` file.
 
-## Project dependencies
 
-To generate or update the dependency requirements for your project:
 
-```
-kedro build-reqs
-```
 
-This will `pip-compile` the contents of `src/requirements.txt` into a new file `src/requirements.lock`. You can see the output of the resolution by opening `src/requirements.lock`.
 
-After this, if you'd like to update your project requirements, please update `src/requirements.txt` and re-run `kedro build-reqs`.
 
-[Further information about project dependencies](https://docs.kedro.org/en/stable/kedro_project_setup/dependencies.html#project-specific-dependencies)
-
-## How to work with Kedro and notebooks
-
-> Note: Using `kedro jupyter` or `kedro ipython` to run your notebook provides these variables in scope: `context`, `catalog`, and `startup_error`.
->
-> Jupyter, JupyterLab, and IPython are already included in the project requirements by default, so once you have run `pip install -r src/requirements.txt` you will not need to take any extra steps before you use them.
-
-### Jupyter
-To use Jupyter notebooks in your Kedro project, you need to install Jupyter:
-
-```
-pip install jupyter
-```
-
-After installing Jupyter, you can start a local notebook server:
-
-```
-kedro jupyter notebook
-```
-
-### JupyterLab
-To use JupyterLab, you need to install it:
-
-```
-pip install jupyterlab
-```
-
-You can also start JupyterLab:
-
-```
-kedro jupyter lab
-```
-
-### IPython
-And if you want to run an IPython session:
-
-```
-kedro ipython
-```
-
-### How to convert notebook cells to nodes in a Kedro project
-You can move notebook code over into a Kedro project structure using a mixture of [cell tagging](https://jupyter-notebook.readthedocs.io/en/stable/changelog.html#release-5-0-0) and Kedro CLI commands.
-
-By adding the `node` tag to a cell and running the command below, the cell's source code will be copied over to a Python file within `src/<package_name>/nodes/`:
-
-```
-kedro jupyter convert <filepath_to_my_notebook>
-```
-> *Note:* The name of the Python file matches the name of the original notebook.
-
-Alternatively, you may want to transform all your notebooks in one go. Run the following command to convert all notebook files found in the project root directory and under any of its sub-folders:
-
-```
-kedro jupyter convert --all
-```
-
-### How to ignore notebook output cells in `git`
-To automatically strip out all output cell contents before committing to `git`, you can run `kedro activate-nbstripout`. This will add a hook in `.git/config` which will run `nbstripout` before anything is committed to `git`.
-
-> *Note:* Your output cells will be retained locally.
-
-## Package your Kedro project
-
-[Further information about building project documentation and packaging your project](https://docs.kedro.org/en/stable/tutorial/package_a_project.html)
