@@ -1,29 +1,10 @@
 import streamlit as st
-import requests
 import pandas as pd
 from functions import make_prediction
-import yaml
-from kedro.framework.session import KedroSession
-from kedro.framework.startup import bootstrap_project
-from pathlib import Path
-import matplotlib.pyplot as plt
-import seaborn as sns
-from dataDownloader import DataLoader
+
 
 base_url = "https://data.iowa.gov/resource/m3tr-qhgy.json"
 output_dir = "./data/01_raw"
-
-# Wskazanie ścieżki do katalogu głównego projektu Kedro
-# Zakładając, że uruchamiasz Streamlit z tego samego katalogu
-project_path = Path.cwd()
-
-# Bootstrap projektu Kedro
-bootstrap_project(project_path)
-
-# Funkcja do uruchomienia Kedro pipeline
-def run_kedro_pipeline(pipeline_name):
-    with KedroSession.create(project_path=project_path) as session:
-        return session.run(pipeline_name=pipeline_name)
 
 page_bg_img = """
 <style>
@@ -45,74 +26,6 @@ def main():
         informacjeOgolne()
     elif choice == "Algorytm Prophet":
         facebookAlgorithm()
-    elif choice == "Algorytm przewidywania sprzedaży":
-        algorytmPrzewidywaniaSprzedaży()
-
-    start_date_to_download = str(st.sidebar.date_input("Wybierz datę początkową", value=pd.to_datetime("2016-12-01"))) + "T00:00:00"
-    end_date_to_download = str(st.sidebar.date_input("Wybierz datę końcową", value=pd.to_datetime("2023-12-02"))) + "T00:00:00"
-
-    if st.sidebar.button("Pobierz rekordy"):
-        data_loader = DataLoader(base_url, start_date_to_download, end_date_to_download, output_dir)
-        is_succes = data_loader.load_data()
-        if is_succes:
-            st.sidebar.write("Dane zapisane lokalnie w lokalizacji data/01_raw/imported_data_iowa_liquer.csv")
-        elif is_succes == False:
-            st.sidebar.write("Dane nie zostały zapisane")
-
-
-    if st.sidebar.button("Retrain model"):
-        run_kedro_pipeline("create_model")
-
-def algorytmPrzewidywaniaSprzedaży():
-    st.header("Algorytm przewidywania sprzedaży")
-
-    # Wczytanie danych z pliku CSV do DataFrame
-    countydf = pd.read_csv('./app/distinct_county.csv')
-    selected_county = st.selectbox("Wybierz Chrabstwo", countydf['county'])
-
-    alcoholTypes = ['Rum', 'Vodka', 'Tequila', 'Whiskies', 'Schnapps']
-    selected_liquor = st.selectbox("Wybierz Alkohol", alcoholTypes)
-
-    # Wybór daty początkowej i końcowej
-    start_date = st.date_input("Wybierz datę początkową", value=pd.to_datetime("2023-12-01"))
-    end_date = st.date_input("Wybierz datę końcową", value=pd.to_datetime("2024-12-31"))
-
-    if st.button("Predict"):
-        with open('./conf/base/parameters_model_prediction.yml', 'w') as file:
-            yaml.dump({
-                'county_name': selected_county,
-                'category_name': selected_liquor,
-                'start_month': start_date.month,
-                'start_year': start_date.year,
-                'end_year': end_date.year,
-                'end_month': end_date.month,
-            }, file)
-        # Uruchamianie modelu i generowanie wykresu
-        result= run_kedro_pipeline("model_prediction")
-
-        result_df = result['predicted_data']
-
-        st.dataframe(result_df)
-
-        historic_df = result['historic_data']
-
-        # Tworzenie daty na podstawie kolumn "Year" i "Month" dla wyników przewidywań
-        result_df['Date'] = pd.to_datetime(result_df['Year'].astype(str) + '-' + result_df['Month'].astype(str))
-
-        # Tworzenie daty na podstawie kolumn "Year" i "Month" dla danych historycznych
-        historic_df['Date'] = pd.to_datetime(historic_df['Year'].astype(str) + '-' + historic_df['Month'].astype(str))
-
-        fig, ax = plt.subplots()
-        sns.lineplot(x=result_df['Date'], y=result_df['predicted'], ax=ax, label='Przewidywana sprzedaż')  
-        sns.lineplot(x=historic_df['Date'], y=historic_df['Sale (Dollars)'], ax=ax, label='Rzeczywista sprzedaż')  # Dodanie danych historycznych
-        plt.title("Przewidywania sprzedaży vs. Rzeczywista sprzedaż")
-        plt.xlabel("Data")
-        plt.ylabel("Sprzedaż w dolarach")
-        plt.xticks(rotation=45)
-        plt.legend()
-        st.pyplot(fig)
-    
-            
 
 def facebookAlgorithm():
     st.header("Facebook algorithm")
