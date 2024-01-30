@@ -1,4 +1,0 @@
-test_data_ratio: 0.2
-num_train_iter: 10000
-learning_rate: 0.01
-
