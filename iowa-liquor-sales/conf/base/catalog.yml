@@ -1,0 +1,23 @@
+# Here you can define all your data sets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://docs.kedro.org/en/stable/data/data_catalog.html
+
+imported_data_iowa_liquer:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/imported_data_iowa_liquer.csv
+  load_args:
+    low_memory: True
+
+final_data:
+  type: pandas.CSVDataSet
+  filepath: data/03_processed/final_processed_data.csv
+  load_args:
+    low_memory: True
+
+
+# predicted_data:
+#   type: pandas.CSVDataSet
+#   filepath: data/07_model_output/predicted_data.csv
+#   load_args:
+#     low_memory: False

@@ -4,7 +4,7 @@ https://kedro.readthedocs.io/en/stable/kedro_project_setup/settings.html."""
 
 # Instantiated project hooks.
 # For example, after creating a hooks.py and defining a ProjectHooks class there, do
-# from asi.hooks import ProjectHooks
+# from iowa_liquor_sales.hooks import ProjectHooks
 # Hooks are executed in a Last-In-First-Out (LIFO) order.
 # HOOKS = (ProjectHooks(),)
 
@@ -26,12 +26,6 @@ https://kedro.readthedocs.io/en/stable/kedro_project_setup/settings.html."""
 from kedro.config import OmegaConfigLoader  # noqa: import-outside-toplevel
 
 CONFIG_LOADER_CLASS = OmegaConfigLoader
-
-CONFIG_LOADER_ARGS = {
-    "config_patterns": {
-        "parameters": ["parameters.yml", "parameters_data_preparation.yml", "parameters_data_science.yml", "parameters_data_evaluation.yml","parameters*/**", "**/parameters*"]
-    }
-}
 # Keyword arguments to pass to the `CONFIG_LOADER_CLASS` constructor.
 # CONFIG_LOADER_ARGS = {
 #       "config_patterns": {

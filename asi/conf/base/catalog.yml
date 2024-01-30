@@ -3,6 +3,10 @@
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://docs.kedro.org/en/stable/data/data_catalog.html
 
+csvInputData:
+ type: pandas.CSVDataSet
+ filepath: data/01_raw/small_iowa_dataset.csv
+
 rawData:
  type: pandas.CSVDataSet
  filepath: data/01_raw/iowa_dataset.csv
@@ -13,14 +17,39 @@ preProcessedData:
  type: pandas.CSVDataSet
  filepath: data/02_intermediate/preProcessed_data.csv
 
-#preCleanedData:
-# type: pandas.CSVDataSet
-# filepath: data/03_primary/pre_cleaned_data.csv
-#
-#countyFullfilledData:
-# type: pandas.CSVDataSet
-# filepath: data/03_primary/county_full_filled_data.csv
+processedData:
+ type: pandas.CSVDataSet
+ filepath: data/04_feature/processed_data.csv
 
-#cleaned_data:
-# type: pandas.ParquetDataSet
-# filepath: data/03_primary/cleaned_data.parquet
+X_train:
+  type: pickle.PickleDataSet
+  filepath: data/05_model_input/X_train.pkl
+  backend: pickle
+
+X_test:
+  type: pickle.PickleDataSet
+  filepath: data/05_model_input/X_test.pkl
+  backend: pickle
+
+y_train:
+  type: pickle.PickleDataSet
+  filepath: data/05_model_input/y_train.pkl
+  backend: pickle
+
+y_test:
+  type: pickle.PickleDataSet
+  filepath: data/05_model_input/y_test.pkl
+  backend: pickle
+
+decision_tree_regressor:
+ type: pickle.PickleDataSet
+ filepath: data/06_models/decisionTreeRegressor_model.pkl
+ versioned: true
+
+decision_tree_regressor_evaluation_results:
+ type: pandas.CSVDataSet
+ filepath: data/07_model_output/decisionTreeRegressor_model_output.csv
+
+predictionData:
+ type: pandas.CSVDataSet
+ filepath: data/08_reporting/predictions.csv
